@@ -8,9 +8,9 @@
 
 <h3>Version information</h3>
 
-<p>Connector Version: 4.0.0</p>
+<p>Connector Version: 4.1.0</p>
 
-<p>FortiSOAR&trade; Version Tested on: 7.4.3-3294</p>
+<p>FortiSOAR&trade; Version Tested on: 7.6.0-5012</p>
 
 <p>Fortinet FortiManager Version Tested on: FortiManager VM64-KVM-V7.2.2 build6198</p>
 
@@ -18,45 +18,33 @@
 
 <p>Certified: Yes</p>
 
-<h3>Release Notes for version 4.0.0</h3>
+<h3>Release Notes for version 4.1.0</h3>
 
-<p>The following changes have been made to the Fortinet FortiManager Connector in version 4.0.0:</p>
+<p>The following changes have been made to the Fortinet FortiManager Connector in version 4.1.0:</p>
 
 <ul>
-    <li>Added a new config parameter named <strong>Workspace Mode Enabled</strong> to identify whether the workspace mode is enabled or disabled on FortiManager.</li>
-    <li>Added a new parameter named <strong><em>NGFW Mode</em></strong> in the following actions:
+    <li>Connector now supports FortiManager-Cloud (Fortinet hosted).</li>
+    <li>Added a new configuration parameter named <strong>FortiManager Type</strong> to choose between <em>FortiManager</em> or <em>FortiManager Cloud</em>.
         <ul>
-            <li>List ADOM Firewall Policies</li>
-            <li>Create Firewall Policy</li>
-            <li>Update Firewall policy</li>
-            <li>Delete Firewall policy</li>
-            <li>Move Firewall Policy</li>
-            <li>ADOM Level Block IP Address</li>
-            <li>ADOM Level Unblock IP Address</li>
-        </ul>
-    <li>Made the parameter <em>NGFW Mode</em> input mandatory in the <strong>Update Policy Package</strong> action.</li>
-    <li>Updated the output schema of the following actions:
-        <ul>
-            <li>Get Installation Policy Package Status</li>
-            <li>Get User Groups List</li>
+            <li>The parameter <em>Port</em> is now moved under <strong>FortiManager</strong>.</li>
         </ul>
     </li>
-    <ul>
-        <li>Renamed the parameter <em><code>Firewall Policy Name</code></em> to <strong><code>Firewall/Security Policy Name</code></strong> in the action <strong><em>List ADOM Firewall Policies</em></strong>.</li>
-    </ul>
-    <li>Moved the parameters <strong><code>Inspection Mode</code></strong> and <strong><code>Schedule Timeout</code></strong> under <em><code>NGFW Mode</code></em> for following actions:
+    <li>The configuration parameters <em>FortiManager Type</em> and <em>Port</em> are now mandatory.</li>
+    <li>The <strong>Update Firewall Policy</strong> operation now accepts an address or an address group to add.</li>
+    <li>Added a new input parameter named <em>NGFW Mode</em> in the <strong>ADOM Level Get Blocked IP Addresses</strong> action.</li>
+    <li>Made the <em>NGFW Mode</em> input parameter mandatory in the following actions:
         <ul>
-            <li>Create Firewall Policy</li>
-            <li>Update Firewall Policy</li>
+            <li>ADOM Level Block IP Address</li>
+            <li>ADOM Level Unblock IP Address</li>
         </ul>
     </li>
 </ul>
 
 <h2>Installing the connector</h2>
 
-<p>Use the <strong>Connector Store</strong> to install the connector. For the detailed procedure to install a connector, click <a href="https://docs.fortinet.com/document/fortisoar/0.0.0/installing-a-connector/1/installing-a-connector" target="_blank">here</a>.</p>
+<p>Use the <strong>Content Hub</strong> to install the connector. For the detailed procedure to install a connector, click <a href="https://docs.fortinet.com/document/fortisoar/0.0.0/installing-a-connector/1/installing-a-connector" target="_top">here</a>.</p>
 
-<p>You can also use the following yum command as a <code>root</code> user to install connectors from an SSH session:</p>
+<p>You can also use the <code>yum</code> command as a root user to install the connector:</p>
 
 <pre>yum install cyops-connector-fortinet-fortimanager</pre>
 
@@ -77,15 +65,6 @@
     <li>You must enable the <em>Administrative Domain</em> features in FortiManager.</li>
     <li>The FortiSOAR&trade; server should have outbound connectivity to port 443 on the Fortinet FortiManager server.</li>
     <li>You must add the configurations required to block or unblock IP addresses, URLs, or applications in Fortinet FortiManager. For more information, see the <a href="#blockUnblockIPAdd">Blocking or Unblocking IP addresses, URLs, or applications in Fortinet FortiManager</a> section.</li>
-
-
-
-
-
-
-
-
-
 </ul>
 
 <h2>Minimum Permissions Required</h2>
@@ -126,12 +105,17 @@
             <td>Password to access the Fortinet FortiManager server to which you will connect and perform the automated operations.</td>
         </tr>
         <tr>
-            <td>ADOM</td>
-            <td>Administrative domain names (ADOMs) of the Fortinet FortiManager server to which you will connect and perform the automated operations. Enter the ADOMs in the CSV or List format.</td>
+            <td>FortiManager Type</td>
+            <td>Select the FortiManager type. You can choose from the following options:
+                <ul>
+                    <li><strong>FortiManager</strong>: Specify the port number to access the Fortinet FortiManager server in the <strong>Port</strong> field. By default, this is set to 443.</li>
+                    <li><strong>FortiManager Cloud</strong>: Specify the client ID to access the Fortinet FortiManager server in the <strong>Client ID</strong> field. By default, this is set to FortiManager.</li>
+                </ul>
+            </td>
         </tr>
         <tr>
-            <td>Port</td>
-            <td>Port number used to access the Fortinet FortiManager server to which you will connect and perform the automated operations. By default, this is set to 443.</td>
+            <td>ADOM</td>
+            <td>Administrative domain names (ADOMs) of the Fortinet FortiManager server to which you will connect and perform the automated operations. Enter the ADOMs in the CSV or List format.</td>
         </tr>
         <tr>
             <td>Workspace Mode Enabled</td>
@@ -140,7 +124,7 @@
         <tr>
             <td>Verify SSL</td>
             <td>Specifies whether the SSL certificate for the server is to be verified.<br />
-                By default, this option is set to <code>True</code>.</td>
+                By default, this option is selected, i.e., set to <code>True</code>.</td>
         </tr>
     </tbody>
 </table>
@@ -1612,6 +1596,15 @@
             <td>(Optional) Specify the ADOM name whose associated list of blocked IP addresses you want to retrieve from Fortinet FortiManager. The ADOM that you specify here overwrites the ADOM that you have specified in the <strong>Connector Configuration</strong> as a configuration parameter.</td>
         </tr>
         <tr>
+            <td>NGFW Mode</td>
+            <td>Select the NGFW mode of the policy package. You can select from following options:
+                <ul>
+                    <li>Profile Based (Default)</li>
+                    <li>Policy Based</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
             <td>Policy Package Name</td>
             <td>Select the policy package name whose associated blocked IP addresses you want to retrieve from Fortinet FortiManager. This parameter makes an API call named <code>list_adom_policy_package</code> to dynamically populate its dropdown selection.</td>
         </tr>
@@ -1667,10 +1660,9 @@
             <td>NGFW Mode</td>
             <td>Select the NGFW mode of the policy package. You can select from following options:
                 <ul>
-                    <li>Profile Based</li>
+                    <li>Profile Based (Default)</li>
                     <li>Policy Based</li>
                 </ul>
-                By default, it is <em>Profile Based</em>.
             </td>
         </tr>
         <tr>
@@ -1726,10 +1718,9 @@
             <td>NGFW Mode</td>
             <td>Select the NGFW mode of the policy package. You can select from following options:
                 <ul>
-                    <li>Profile Based</li>
+                    <li>Profile Based (Default)</li>
                     <li>Policy Based</li>
                 </ul>
-                By default, it is <em>Profile Based</em>.
             </td>
         </tr>
         <tr>
@@ -6240,7 +6231,7 @@
 
 <h2>Included playbooks</h2>
 
-<p>The <code><em>Sample - Fortinet Fortimanager - 4.0.0</em></code> playbook collection comes bundled with the Fortinet FortiManager connector. These playbooks contain steps using which you can perform all supported actions. You can see bundled playbooks in the <strong>Automation</strong> &gt; <strong>Playbooks</strong> section in FortiSOAR&trade; after importing the Fortinet FortiManager connector.</p>
+<p>The <code><em>Sample - Fortinet Fortimanager - 4.1.0</em></code> playbook collection comes bundled with the Fortinet FortiManager connector. These playbooks contain steps using which you can perform all supported actions. You can see bundled playbooks in the <strong>Automation</strong> &gt; <strong>Playbooks</strong> section in FortiSOAR&trade; after importing the Fortinet FortiManager connector.</p>
 
 <ul>
     <li>ADOM Level Block IP Address</li>
